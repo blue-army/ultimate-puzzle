@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ultimate_puzzle
 {
@@ -19,7 +18,7 @@ namespace ultimate_puzzle
 
     public class Piece
     {
-        public Style[] Sides { get; private set; }
+        private Style[] Sides { get; }
 
         public Piece(Style side1, Style side2, Style side3, Style side4)
         {
@@ -117,9 +116,9 @@ namespace ultimate_puzzle
     {
         public List<Piece> Pieces { get; } = new List<Piece>();
         
-        public Entry[] Board = new Entry[16];
+        public Entry[] Board { get; } = new Entry[16];
         
-        private static Entry s_nullEntry = new Entry();
+        private static readonly Entry s_nullEntry = new Entry();
 
         public Game()
         {
@@ -127,11 +126,6 @@ namespace ultimate_puzzle
             {
                 Board[entryIndex] = new Entry();
             }
-        }
-
-        public Piece PieceAt(int entryIndex)
-        {
-            return Board[entryIndex].Piece;
         }
 
         public Entry EntryAbove(int entryIndex)
@@ -180,10 +174,10 @@ namespace ultimate_puzzle
             return Dump();
         }
     }
-    
-    class Program
+
+    static class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             var game = new Game();
             
@@ -233,10 +227,8 @@ namespace ultimate_puzzle
                 // try all orientations
                 for (var orientationIndex = 0; orientationIndex < 4; orientationIndex++)
                 {
-                    Entry other = null;
-                    
                     // check entry above
-                    other = game.EntryAbove(entryIndex);
+                    var other = game.EntryAbove(entryIndex);
                     if (other.Piece != null)
                     {
                         if (!Piece.Compatible(
