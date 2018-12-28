@@ -7,14 +7,14 @@ namespace ultimate_puzzle
 {
     public enum Style
     {
-        InternalArrow_In = -1,
-        InternalArrow_Out = -4,
+        InwardArrow_In = -1,
+        OutwardArrow_Out = 1,
         Octagon_In = -2,
         Octagon_Out = 2,
         Plus_In = -3,
         Plus_Out = 3,
-        ExternalArrow_In = 4,
-        ExternalArrow_Out = 1
+        InwardArrow_Out = 4,
+        OutwardArrow_In = -4
     }
 
     public class Piece
@@ -190,22 +190,22 @@ namespace ultimate_puzzle
             
             game.Pieces.AddRange(new []
             {
-                new Piece(Style.Octagon_Out, Style.Plus_Out, Style.InternalArrow_Out, Style.Octagon_In),
-                new Piece(Style.ExternalArrow_Out, Style.Octagon_In, Style.InternalArrow_Out, Style.ExternalArrow_Out),
-                new Piece(Style.Octagon_Out, Style.ExternalArrow_In, Style.InternalArrow_Out, Style.InternalArrow_In),
-                new Piece(Style.InternalArrow_Out, Style.Octagon_Out, Style.ExternalArrow_In, Style.Plus_In),
-                new Piece(Style.ExternalArrow_In, Style.Octagon_In, Style.Plus_In, Style.Octagon_Out),
-                new Piece(Style.InternalArrow_In, Style.Plus_In, Style.ExternalArrow_In, Style.ExternalArrow_In),
-                new Piece(Style.InternalArrow_In, Style.Octagon_In, Style.ExternalArrow_In, Style.ExternalArrow_Out),
-                new Piece(Style.InternalArrow_In, Style.Octagon_Out, Style.Octagon_Out, Style.Octagon_In),
-                new Piece(Style.Octagon_Out, Style.Octagon_In, Style.InternalArrow_In, Style.ExternalArrow_Out),
-                new Piece(Style.Plus_Out, Style.ExternalArrow_Out, Style.Plus_In, Style.InternalArrow_Out),
-                new Piece(Style.ExternalArrow_Out, Style.InternalArrow_In, Style.Octagon_In, Style.Plus_Out),
-                new Piece(Style.ExternalArrow_In, Style.ExternalArrow_In, Style.Octagon_In, Style.Plus_In),
-                new Piece(Style.ExternalArrow_In, Style.Plus_Out, Style.InternalArrow_In, Style.InternalArrow_Out),
-                new Piece(Style.Octagon_Out, Style.Plus_Out, Style.InternalArrow_In, Style.InternalArrow_In),
+                new Piece(Style.Octagon_Out, Style.Plus_Out, Style.OutwardArrow_In, Style.Octagon_In),
+                new Piece(Style.OutwardArrow_Out, Style.Octagon_In, Style.OutwardArrow_In, Style.OutwardArrow_Out),
+                new Piece(Style.Octagon_Out, Style.InwardArrow_Out, Style.OutwardArrow_In, Style.InwardArrow_In),
+                new Piece(Style.OutwardArrow_In, Style.Octagon_Out, Style.InwardArrow_Out, Style.Plus_In),
+                new Piece(Style.InwardArrow_Out, Style.Octagon_In, Style.Plus_In, Style.Octagon_Out),
+                new Piece(Style.InwardArrow_In, Style.Plus_In, Style.InwardArrow_Out, Style.InwardArrow_Out),
+                new Piece(Style.InwardArrow_In, Style.Octagon_In, Style.InwardArrow_Out, Style.OutwardArrow_Out),
+                new Piece(Style.InwardArrow_In, Style.Octagon_Out, Style.Octagon_Out, Style.Octagon_In),
+                new Piece(Style.Octagon_Out, Style.Octagon_In, Style.InwardArrow_In, Style.OutwardArrow_Out),
+                new Piece(Style.Plus_Out, Style.OutwardArrow_Out, Style.Plus_In, Style.OutwardArrow_In),
+                new Piece(Style.OutwardArrow_Out, Style.InwardArrow_In, Style.Octagon_In, Style.Plus_Out),
+                new Piece(Style.InwardArrow_Out, Style.InwardArrow_Out, Style.Octagon_In, Style.Plus_In),
+                new Piece(Style.InwardArrow_Out, Style.Plus_Out, Style.InwardArrow_In, Style.OutwardArrow_In),
+                new Piece(Style.Octagon_Out, Style.Plus_Out, Style.InwardArrow_In, Style.InwardArrow_In),
                 new Piece(Style.Plus_In, Style.Octagon_In, Style.Octagon_Out, Style.Plus_Out),
-                new Piece(Style.Octagon_In, Style.Plus_In, Style.ExternalArrow_Out, Style.Octagon_Out),
+                new Piece(Style.Octagon_In, Style.Plus_In, Style.OutwardArrow_Out, Style.Octagon_Out),
             });
 
             var solutions = new List<string>();
