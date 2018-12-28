@@ -102,13 +102,13 @@ namespace ultimate_puzzle
 
     public class Entry
     {
-        public int Piece { get; set; }
+        public Piece Piece { get; set; }
         
         public int Orientation { get; set; }
 
         public Entry()
         {
-            Piece = -1;
+            Piece = null;
             Orientation = -1;
         }
     }
@@ -131,10 +131,9 @@ namespace ultimate_puzzle
 
         public Piece PieceAt(int entryIndex)
         {
-            var pieceIndex = Board[entryIndex].Piece;
-            return pieceIndex == -1 ? null : Pieces[pieceIndex];
+            return Board[entryIndex].Piece;
         }
-        
+
         public Entry EntryAbove(int entryIndex)
         {
             if (entryIndex < 0 || entryIndex > 15)
@@ -173,7 +172,7 @@ namespace ultimate_puzzle
 
         public string Dump()
         {
-            return String.Join(", ", Board.Select(e => $"{e.Piece}:{e.Orientation}"));   
+            return string.Join(", ", Board.Select(e => $"{Pieces.IndexOf(e.Piece)}:{e.Orientation}"));   
         }
 
         public override string ToString()
@@ -225,10 +224,10 @@ namespace ultimate_puzzle
                 return;
             }
 
-            for (var pieceIndex = 0; pieceIndex < 16; pieceIndex++)
+            foreach (var piece in  game.Pieces)
             {
                 // check if piece is already on the board
-                if (game.Board.FirstOrDefault(e => e.Piece == pieceIndex) != null)
+                if (game.Board.Any(e => e.Piece == piece))
                     continue;
                 
                 // try all orientations
@@ -238,53 +237,53 @@ namespace ultimate_puzzle
                     
                     // check entry above
                     other = game.EntryAbove(entryIndex);
-                    if (other.Piece != -1)
+                    if (other.Piece != null)
                     {
                         if (!Piece.Compatible(
-                            game.Pieces[other.Piece].Bottom(other.Orientation),
-                            game.Pieces[pieceIndex].Top(orientationIndex)))
+                            other.Piece.Bottom(other.Orientation),
+                            piece.Top(orientationIndex)))
                             continue;
                     }
                     
                     // check entry below
                     other = game.EntryBelow(entryIndex);
-                    if (other.Piece != -1)
+                    if (other.Piece != null)
                     {
                         if (!Piece.Compatible(
-                            game.Pieces[other.Piece].Top(other.Orientation),
-                            game.Pieces[pieceIndex].Bottom(orientationIndex)))
+                            other.Piece.Top(other.Orientation),
+                            piece.Bottom(orientationIndex)))
                             continue;
                     }
                     
                     // check entry on left
                     other = game.EntryOnLeft(entryIndex);
-                    if (other.Piece != -1)
+                    if (other.Piece != null)
                     {
                         if (!Piece.Compatible(
-                            game.Pieces[other.Piece].Right(other.Orientation),
-                            game.Pieces[pieceIndex].Left(orientationIndex)))
+                            other.Piece.Right(other.Orientation),
+                            piece.Left(orientationIndex)))
                             continue;
                     }
                     
                     // check entry on right
                     other = game.EntryOnRight(entryIndex);
-                    if (other.Piece != -1)
+                    if (other.Piece != null)
                     {
                         if (!Piece.Compatible(
-                            game.Pieces[other.Piece].Left(other.Orientation),
-                            game.Pieces[pieceIndex].Right(orientationIndex)))
+                            other.Piece.Left(other.Orientation),
+                            piece.Right(orientationIndex)))
                             continue;
                     }
 
                     // play piece
-                    game.Board[entryIndex].Piece = pieceIndex;
+                    game.Board[entryIndex].Piece = piece;
                     game.Board[entryIndex].Orientation = orientationIndex;
                     
                     // recurse
                     Play(game, entryIndex + 1, onSolution);
                     
-                    // remove piece
-                    game.Board[entryIndex].Piece = -1;
+                    // cleanup
+                    game.Board[entryIndex].Piece = null;
                     game.Board[entryIndex].Orientation = -1;
                 }
             }
