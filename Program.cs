@@ -22,7 +22,7 @@ namespace ultimate_puzzle
 
         public Piece(Style side1, Style side2, Style side3, Style side4)
         {
-            Sides = new[] {side1, side2, side3, side4};
+            Sides = new[] { side1, side2, side3, side4 };
         }
 
         public Style Top(int orientation)
@@ -95,14 +95,14 @@ namespace ultimate_puzzle
 
         public static bool Compatible(Style style1, Style style2)
         {
-            return ((int) style1 + style2 == 0);
+            return ((int)style1 + style2 == 0);
         }
     }
 
     public class Entry
     {
         public Piece Piece { get; set; }
-        
+
         public int Orientation { get; set; }
 
         public Entry()
@@ -111,13 +111,13 @@ namespace ultimate_puzzle
             Orientation = -1;
         }
     }
-    
+
     class Game
     {
         public List<Piece> Pieces { get; } = new List<Piece>();
-        
+
         public Entry[] Board { get; } = new Entry[16];
-        
+
         private static readonly Entry s_nullEntry = new Entry();
 
         public Game()
@@ -136,7 +136,7 @@ namespace ultimate_puzzle
             var location = entryIndex >= 0 && entryIndex <= 3 ? -1 : entryIndex - 4;
             return location == -1 ? s_nullEntry : Board[location];
         }
-        
+
         public Entry EntryBelow(int entryIndex)
         {
             if (entryIndex < 0 || entryIndex > 15)
@@ -145,7 +145,7 @@ namespace ultimate_puzzle
             var location = entryIndex >= 12 && entryIndex <= 15 ? -1 : entryIndex + 4;
             return location == -1 ? s_nullEntry : Board[location];
         }
-        
+
         public Entry EntryOnLeft(int entryIndex)
         {
             if (entryIndex < 0 || entryIndex > 15)
@@ -154,7 +154,7 @@ namespace ultimate_puzzle
             var location = entryIndex == 0 || entryIndex == 4 || entryIndex == 8 || entryIndex == 12 ? -1 : entryIndex - 1;
             return location == -1 ? s_nullEntry : Board[location];
         }
-        
+
         public Entry EntryOnRight(int entryIndex)
         {
             if (entryIndex < 0 || entryIndex > 15)
@@ -166,7 +166,7 @@ namespace ultimate_puzzle
 
         public string Dump()
         {
-            return string.Join(", ", Board.Select(e => $"{Pieces.IndexOf(e.Piece)}:{e.Orientation}"));   
+            return string.Join(", ", Board.Select(e => $"{Pieces.IndexOf(e.Piece)}:{e.Orientation}"));
         }
 
         public override string ToString()
@@ -180,8 +180,8 @@ namespace ultimate_puzzle
         private static void Main()
         {
             var game = new Game();
-            
-            game.Pieces.AddRange(new []
+
+            game.Pieces.AddRange(new[]
             {
                 new Piece(Style.Octagon_Out, Style.Plus_Out, Style.OutwardArrow_In, Style.Octagon_In),
                 new Piece(Style.OutwardArrow_Out, Style.Octagon_In, Style.OutwardArrow_In, Style.OutwardArrow_Out),
@@ -202,7 +202,7 @@ namespace ultimate_puzzle
             });
 
             var solutions = new List<string>();
-            
+
             Play(game, 0, g =>
             {
                 solutions.Add(g.Dump());
@@ -218,12 +218,12 @@ namespace ultimate_puzzle
                 return;
             }
 
-            foreach (var piece in  game.Pieces)
+            foreach (var piece in game.Pieces)
             {
                 // check if piece is already on the board
                 if (game.Board.Any(e => e.Piece == piece))
                     continue;
-                
+
                 // try all orientations
                 for (var orientationIndex = 0; orientationIndex < 4; orientationIndex++)
                 {
@@ -236,17 +236,7 @@ namespace ultimate_puzzle
                             piece.Top(orientationIndex)))
                             continue;
                     }
-                    
-                    // check entry below
-                    other = game.EntryBelow(entryIndex);
-                    if (other.Piece != null)
-                    {
-                        if (!Piece.Compatible(
-                            other.Piece.Top(other.Orientation),
-                            piece.Bottom(orientationIndex)))
-                            continue;
-                    }
-                    
+
                     // check entry on left
                     other = game.EntryOnLeft(entryIndex);
                     if (other.Piece != null)
@@ -256,24 +246,14 @@ namespace ultimate_puzzle
                             piece.Left(orientationIndex)))
                             continue;
                     }
-                    
-                    // check entry on right
-                    other = game.EntryOnRight(entryIndex);
-                    if (other.Piece != null)
-                    {
-                        if (!Piece.Compatible(
-                            other.Piece.Left(other.Orientation),
-                            piece.Right(orientationIndex)))
-                            continue;
-                    }
 
                     // play piece
                     game.Board[entryIndex].Piece = piece;
                     game.Board[entryIndex].Orientation = orientationIndex;
-                    
+
                     // recurse
                     Play(game, entryIndex + 1, onSolution);
-                    
+
                     // cleanup
                     game.Board[entryIndex].Piece = null;
                     game.Board[entryIndex].Orientation = -1;
