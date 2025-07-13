@@ -181,12 +181,11 @@ namespace ultimate_puzzle
         {
             var game = new Game();
 
-            game.Pieces.AddRange(new[]
-            {
+            game.Pieces.AddRange([
                 new Piece(Style.Octagon_Out, Style.Plus_Out, Style.OutwardArrow_In, Style.Octagon_In),
                 new Piece(Style.OutwardArrow_Out, Style.Octagon_In, Style.OutwardArrow_In, Style.OutwardArrow_Out),
                 new Piece(Style.Octagon_Out, Style.InwardArrow_Out, Style.OutwardArrow_In, Style.InwardArrow_In),
-                new Piece(Style.OutwardArrow_In, Style.Octagon_Out, Style.InwardArrow_Out, Style.Plus_In),
+                new Piece(Style.InwardArrow_Out, Style.Plus_In, Style.OutwardArrow_In, Style.Octagon_Out),
                 new Piece(Style.InwardArrow_Out, Style.Octagon_In, Style.Plus_In, Style.Octagon_Out),
                 new Piece(Style.InwardArrow_In, Style.Plus_In, Style.InwardArrow_Out, Style.InwardArrow_Out),
                 new Piece(Style.InwardArrow_In, Style.Octagon_In, Style.InwardArrow_Out, Style.OutwardArrow_Out),
@@ -199,7 +198,7 @@ namespace ultimate_puzzle
                 new Piece(Style.Octagon_Out, Style.Plus_Out, Style.InwardArrow_In, Style.InwardArrow_In),
                 new Piece(Style.Plus_In, Style.Octagon_In, Style.Octagon_Out, Style.Plus_Out),
                 new Piece(Style.Octagon_In, Style.Plus_In, Style.OutwardArrow_Out, Style.Octagon_Out),
-            });
+            ]);
 
             var solutions = new List<string>();
 
